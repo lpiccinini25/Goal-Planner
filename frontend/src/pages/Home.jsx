@@ -2,11 +2,19 @@ import { useState, useEffect } from "react";
 import api from "../api";
 import Note from "../components/Note"
 import "../styles/Home.css"
+import Calendar from 'react-calendar'
+import 'react-calendar/dist/Calendar.css';
 
 function Home() {
     const [notes, setNotes] = useState([]);
     const [content, setContent] = useState("");
     const [title, setTitle] = useState("");
+    const [date, setDate] = useState(new Date());
+
+    const onChange = date => {
+        setDate(date)
+    };
+
 
     useEffect(() => {
         getNotes();
@@ -78,6 +86,10 @@ function Home() {
                 <br />
                 <input type="submit" value="Submit"></input>
             </form>
+            <div>
+                <Calendar onChange={onChange} value={date} />
+                {console.log(date)}
+            </div>
         </div>
     );
 }

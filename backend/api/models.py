@@ -4,7 +4,6 @@ from datetime import datetime
 
 class Note(models.Model):
     title = models.CharField(max_length=100)
-    content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     task_date = models.DateTimeField(default=datetime.now)
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="notes")

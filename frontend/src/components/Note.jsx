@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import "../styles/Note.css"
 
 
-function Note({ note, onDelete }) {
+function Note({ note, onDelete, show}) {
     const formattedDate = new Date(note.created_at).toLocaleDateString("en-US")
 
     const [completed, setCompleted] = useState(false);
@@ -23,9 +23,9 @@ function Note({ note, onDelete }) {
                 />
             </div>
             <p className="note-date">{formattedDate}</p>
-            <button className="delete-button" onClick={() => onDelete(note.id)}>
+            {show && <button className="delete-button" onClick={() => onDelete(note.id)}>
                 Delete
-            </button>
+            </button>}
         </div>
     );
 }

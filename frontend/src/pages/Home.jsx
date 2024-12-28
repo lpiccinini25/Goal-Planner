@@ -11,6 +11,16 @@ function Home() {
     const [title, setTitle] = useState("");
     const [date, setDate] = useState(new Date());
     const [timestamp, setTimestamp] = useState(date.getTime());
+    const [deleteMode, setDeleteMode] = useState(false)
+
+    const activateDeleteMode = (e) => {
+        if (deleteMode === false) {
+            setDeleteMode(true)
+        } else {
+            setDeleteMode(false)
+        }
+        getNotes(timestamp)
+    }
 
     const onChange = date => {
         setDate(date);
@@ -67,12 +77,12 @@ function Home() {
             <div>
                 <h2>{timestamp}</h2>
                 {notes.map((note) => (
-                    <Note note={note} onDelete={deleteNote} key={note.id} />
+                    <Note note={note} onDelete={deleteNote} key={note.id} show={deleteMode}/>
                 ))}
             </div>
-            <h2>Create a Note</h2>
+            <h2>Create a Task</h2>
             <form onSubmit={createNote}>
-                <label htmlFor="title">Title:</label>
+                <label htmlFor="title">Task:</label>
                 <br />
                 <input
                     type="text"
@@ -82,20 +92,10 @@ function Home() {
                     onChange={(e) => setTitle(e.target.value)}
                     value={title}
                 />
-                <label htmlFor="content">Content:</label>
-                <br />
-                <textarea
-                    id="content"
-                    name="content"
-                    required
-                    value={content}
-                    onChange={(e) => setContent(e.target.value)}
-                ></textarea>
-                <br />
                 <input type="submit" value="Submit"></input>
             </form>
+            <button onClick={activateDeleteMode}>Delete Tasks</button>
         </div>
     );
 }
-
-export default Home;
+export default Home

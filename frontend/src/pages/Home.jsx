@@ -10,19 +10,22 @@ function Home() {
     const [content, setContent] = useState("");
     const [title, setTitle] = useState("");
     const [date, setDate] = useState(new Date());
+    const [timestamp, setTimestamp] = useState(date.getTime());
 
     const onChange = date => {
-        setDate(date)
+        setDate(date);
+        const temp = date.getTime();
+        setTimestamp(temp);
+        getNotes(temp);
     };
 
-
     useEffect(() => {
-        getNotes();
-    }, []);
+        getNotes(timestamp);
+    }, [timestamp]);
 
-    const getNotes = () => {
+    const getNotes = (timestamp) => {
         api
-            .get("/api/notes/")
+            .get(`/api/notes/?timestamp=${timestamp}`)
             .then((res) => res.data)
             .then((data) => {
                 setNotes(data);
@@ -37,7 +40,7 @@ function Home() {
             .then((res) => {
                 if (res.status === 204) alert("Note deleted!");
                 else alert("Failed to delete note.");
-                getNotes();
+                getNotes(timestamp);
             })
             .catch((error) => alert(error));
     };
@@ -45,19 +48,24 @@ function Home() {
     const createNote = (e) => {
         e.preventDefault();
         api
-            .post("/api/notes/", { content, title })
+            .post(`/api/notes/?timestamp=${timestamp}`, { content, title })
             .then((res) => {
                 if (res.status === 201) alert("Note created!");
                 else alert("Failed to make note.");
-                getNotes();
+                getNotes(timestamp);
             })
             .catch((err) => alert(err));
     };
 
+
     return (
         <div>
             <div>
-                <h2>Notes</h2>
+                <Calendar onChange={onChange} value={date} />
+                {console.log(timestamp)}
+            </div>
+            <div>
+                <h2>{timestamp}</h2>
                 {notes.map((note) => (
                     <Note note={note} onDelete={deleteNote} key={note.id} />
                 ))}
@@ -86,10 +94,6 @@ function Home() {
                 <br />
                 <input type="submit" value="Submit"></input>
             </form>
-            <div>
-                <Calendar onChange={onChange} value={date} />
-                {console.log(date)}
-            </div>
         </div>
     );
 }

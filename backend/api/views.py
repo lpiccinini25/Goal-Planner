@@ -4,6 +4,7 @@ from rest_framework import generics
 from .serializers import UserSerializer, NoteSerializer
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from .models import Note
+from datetime import datetime
 
 class NoteListCreate(generics.ListCreateAPIView):
     serializer_class = NoteSerializer
@@ -11,11 +12,25 @@ class NoteListCreate(generics.ListCreateAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        return Note.objects.filter(author=user)
+        queryset = Note.objects.filter(author=user)
+
+        timestamp = self.request.query_params.get('timestamp', None)
+        if timestamp:
+            try:
+                date = datetime.fromtimestamp(int(timestamp)/1000)
+                queryset = queryset.filter(task_date=date)
+            except ValueError:
+                # Handle invalid date format gracefully
+                pass
+
+        return queryset
     
     def perform_create(self, serializer):
         if serializer.is_valid():
-            serializer.save(author=self.request.user)
+            timestamp = self.request.query_params.get('timestamp', None)
+            if timestamp:
+                date = datetime.fromtimestamp(int(timestamp)/1000)
+            serializer.save(author=self.request.user, task_date=date)
         else:
             print(serializer.errors)
 

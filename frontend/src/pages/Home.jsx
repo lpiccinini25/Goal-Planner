@@ -57,7 +57,7 @@ function Home() {
     const createTask = (e) => {
         e.preventDefault();
         api
-            .post(`/api/tasks/?timestamp=${timestamp}`, { content, title })
+            .post(`/api/tasks/?timestamp=${timestamp}`, { title })
             .then((res) => {
                 if (res.status === 201) alert("Task created!");
                 else alert("Failed to make task.");

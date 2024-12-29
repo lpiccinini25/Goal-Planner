@@ -9,7 +9,7 @@ function Task({ task, onDelete, show}) {
     const [completed, setCompleted] = useState(false);
     const complete = async () => {
         try {
-            const resp = api.patch(`api/tasks/update/${task.id}`, {complete : !completed})
+            const resp = api.patch(`api/tasks/update/${task.id}/`, {complete : !completed})
             console.log(!completed)
             setCompleted(!completed)
         } catch (error) {

@@ -7,6 +7,7 @@ class Task(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     task_date = models.DateTimeField(default=datetime.now)
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="notes")
+    importance = models.IntegerField(default=0)
     complete = models.BooleanField(default=False)
 
     def __str__(self):

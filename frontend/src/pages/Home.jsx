@@ -12,8 +12,13 @@ function Home() {
     const [date, setDate] = useState(new Date());
     const [timestamp, setTimestamp] = useState(date.getTime());
     const [deleteMode, setDeleteMode] = useState(false)
+    const [importance, setImportance] = useState(0)
 
-    const options = ['Essential', 'Vital', 'Fair', 'Trivial']
+    const options = ['Essential (4 points)', 'Vital (3 points)', 'Fair (2 points)', 'Trivial (1 point)']
+
+    const setTaskImportance = (value) => {
+        setImportance(value)
+    }
 
     const activateDeleteMode = (e) => {
         if (deleteMode === false) {
@@ -32,8 +37,11 @@ function Home() {
     };
 
     useEffect(() => {
-        getTasks(timestamp);
-    }, [timestamp]);
+        const startOfToday = new Date();
+        startOfToday.setHours(0, 0, 0, 0);
+        setTimestamp(startOfToday.getTime())
+        getTasks(startOfToday.getTime());
+    }, []);
 
     const getTasks = (timestamp) => {
         api
@@ -59,8 +67,14 @@ function Home() {
 
     const createTask = (e) => {
         e.preventDefault();
+
+        if (importance === 0) {
+            alert('Please choose an importance level')
+            return;
+        }
+
         api
-            .post(`/api/tasks/?timestamp=${timestamp}`, { title })
+            .post(`/api/tasks/?timestamp=${timestamp}`, { title , importance})
             .then((res) => {
                 if (res.status === 201) alert("Task created!");
                 else alert("Failed to make task.");
@@ -68,7 +82,6 @@ function Home() {
             })
             .catch((err) => alert(err));
     };
-
 
     return (
         <div>
@@ -94,7 +107,7 @@ function Home() {
                     onChange={(e) => setTitle(e.target.value)}
                     value={title}
                 />
-                <Dropdown options={options}/>
+                <Dropdown options={options} callback={setTaskImportance}/>
                 <input type="submit" value="Submit"></input>
             </form>
             <button onClick={activateDeleteMode}>Delete Tasks</button>

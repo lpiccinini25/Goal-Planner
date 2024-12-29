@@ -1,13 +1,12 @@
 import { useState, useEffect } from "react";
 import api from "../api";
-import Note from "../components/Note"
+import Task from "../components/Task"
 import "../styles/Home.css"
 import Calendar from 'react-calendar'
 import 'react-calendar/dist/Calendar.css';
 
 function Home() {
-    const [notes, setNotes] = useState([]);
-    const [content, setContent] = useState("");
+    const [Tasks, setTasks] = useState([]);
     const [title, setTitle] = useState("");
     const [date, setDate] = useState(new Date());
     const [timestamp, setTimestamp] = useState(date.getTime());
@@ -19,50 +18,50 @@ function Home() {
         } else {
             setDeleteMode(false)
         }
-        getNotes(timestamp)
+        getTasks(timestamp)
     }
 
     const onChange = date => {
         setDate(date);
         const temp = date.getTime();
         setTimestamp(temp);
-        getNotes(temp);
+        getTasks(temp);
     };
 
     useEffect(() => {
-        getNotes(timestamp);
+        getTasks(timestamp);
     }, [timestamp]);
 
-    const getNotes = (timestamp) => {
+    const getTasks = (timestamp) => {
         api
-            .get(`/api/notes/?timestamp=${timestamp}`)
+            .get(`/api/tasks/?timestamp=${timestamp}`)
             .then((res) => res.data)
             .then((data) => {
-                setNotes(data);
+                setTasks(data);
                 console.log(data);
             })
             .catch((err) => alert(err));
     };
 
-    const deleteNote = (id) => {
+    const deleteTask = (id) => {
         api
-            .delete(`/api/notes/delete/${id}/`)
+            .delete(`/api/task/delete/${id}/`)
             .then((res) => {
-                if (res.status === 204) alert("Note deleted!");
-                else alert("Failed to delete note.");
-                getNotes(timestamp);
+                if (res.status === 204) alert("Task deleted!");
+                else alert("Failed to delete task.");
+                getTasks(timestamp);
             })
             .catch((error) => alert(error));
     };
 
-    const createNote = (e) => {
+    const createTask = (e) => {
         e.preventDefault();
         api
-            .post(`/api/notes/?timestamp=${timestamp}`, { content, title })
+            .post(`/api/tasks/?timestamp=${timestamp}`, { content, title })
             .then((res) => {
-                if (res.status === 201) alert("Note created!");
-                else alert("Failed to make note.");
-                getNotes(timestamp);
+                if (res.status === 201) alert("Task created!");
+                else alert("Failed to make task.");
+                getTasks(timestamp);
             })
             .catch((err) => alert(err));
     };
@@ -76,12 +75,12 @@ function Home() {
             </div>
             <div>
                 <h2>{timestamp}</h2>
-                {notes.map((note) => (
-                    <Note note={note} onDelete={deleteNote} key={note.id} show={deleteMode}/>
+                {Tasks.map((task) => (
+                    <Task task={task} onDelete={deleteTask} key={task.id} show={deleteMode}/>
                 ))}
             </div>
             <h2>Create a Task</h2>
-            <form onSubmit={createNote}>
+            <form onSubmit={createTask}>
                 <label htmlFor="title">Task:</label>
                 <br />
                 <input

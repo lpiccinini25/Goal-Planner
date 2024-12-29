@@ -1,18 +1,18 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User
 from rest_framework import generics
-from .serializers import UserSerializer, NoteSerializer
+from .serializers import UserSerializer, TaskSerializer
 from rest_framework.permissions import IsAuthenticated, AllowAny
-from .models import Note
+from .models import Task
 from datetime import datetime
 
-class NoteListCreate(generics.ListCreateAPIView):
-    serializer_class = NoteSerializer
+class TaskListCreate(generics.ListCreateAPIView):
+    serializer_class = TaskSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         user = self.request.user
-        queryset = Note.objects.filter(author=user)
+        queryset = Task.objects.filter(author=user)
 
         timestamp = self.request.query_params.get('timestamp', None)
         if timestamp:
@@ -34,13 +34,21 @@ class NoteListCreate(generics.ListCreateAPIView):
         else:
             print(serializer.errors)
 
-class NoteDelete(generics.DestroyAPIView):
-    seralizer_class = NoteSerializer
+class TaskUpdate(generics.UpdateAPIView):
+    serializer_class = TaskSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         user = self.request.user
-        return Note.objects.filter(author=user)
+        return Task.objects.filter(author=user)
+
+class TaskDelete(generics.DestroyAPIView):
+    seralizer_class = TaskSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        return Task.objects.filter(author=user)
     
     
 

@@ -16,8 +16,13 @@ function Dropdown({ options = [] }) {
 
   return (
     <div className={"dropdown"}>
-      <div className="select" onClick={handleToggle}>
-        <span className="selected">{selected}</span>
+      <div className={`select        
+        ${selected === 'Essential' ? 'Essential' : ''}
+        ${selected === 'Vital' ? 'Vital' : ''}
+        ${selected === 'Fair' ? 'Fair' : ''}
+        ${selected === 'Trivial' ? 'Trivial' : 'Unchosen'}       
+        `} onClick={handleToggle}>
+        <span className={'selected'}>{selected}</span>
         <span className="caret"></span>
       </div>
       {isOpen && (
@@ -25,7 +30,13 @@ function Dropdown({ options = [] }) {
           {options.map((opt) => (
             <li
               key={opt}
-              className={`option ${opt === selected ? 'active' : ''}`}
+              className={`
+                ${opt === selected ? 'active' : ''} 
+                ${opt === 'Essential' ? 'Essential' : ''}
+                ${opt === 'Vital' ? 'Vital' : ''}
+                ${opt === 'Fair' ? 'Fair' : ''}
+                ${opt === 'Trivial' ? 'Trivial' : ''}
+                `}
               onClick={() => handleOptionClick(opt)}
             >
               {opt}

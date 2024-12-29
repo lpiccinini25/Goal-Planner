@@ -7,10 +7,33 @@
    .dropdown * {
     box-sizing: border-box;
    }
+
+   .Unchosen {
+    background: #212f3b;
+    color: white
+   }
+
+   .Essential {
+    background: #eaaa07;
+    color: #000000;
+   }
+
+   .Vital {
+    background: #b707de;
+    color: #000000;
+   }
+
+   .Fair {
+    background: #37adfd;
+    color: #000000;
+   }
+
+   .Trivial {
+    background: #08f10c;
+    color: #000000;
+   }
   
    .select {
-    background: #212f3b;
-    color: #fff;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -23,10 +46,6 @@
    .selected-clicked {
     border: 2pm #26489a solid;
     box-shadow: 0 0 0 0.8em #26489a;
-   }
-  
-   .select:hover {
-    background: #323741;
    }
   
   .caret {
@@ -47,9 +66,9 @@
     padding: 0.2em 0.5em;
     background: #323741;
     border: 1px #363a43 solid;
-    box-shadow: 0 0.5em 1em rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0.5em 1em rgba(81, 43, 43, 0.2);
     border-radius: 0.5em;
-    color: #9fa5b5;
+    color: #000000;
     position: absolute;
     top: 3em;
     left: 50%;
@@ -66,14 +85,6 @@
     margin: 0.3em 0;
     border-radius: 0.5em;
     cursor: pointer;
-  }
-  
-  .menu li:hover {
-    background: #2a2d35;
-  }
-  
-  .active {
-    background: #23242a;
   }
   
   .menu-open {

@@ -12,11 +12,11 @@ function Note({ note, onDelete, show}) {
     };
     return (
         <div className="note-container">
-            <div class="title-checkbox-row">
-                <h1 class="title">{note.title}</h1>
+            <div className="checkbox-container">
+                <span className="task-title">{note.title}</span>
                 <input 
                 type="checkbox" 
-                class="checkbox" 
+                className="checkbox" 
                 id="exampleCheckbox" 
                 checked={completed}
                 onChange={complete}

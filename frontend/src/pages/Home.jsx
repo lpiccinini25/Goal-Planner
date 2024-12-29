@@ -4,6 +4,7 @@ import Task from "../components/Task"
 import "../styles/Home.css"
 import Calendar from 'react-calendar'
 import 'react-calendar/dist/Calendar.css';
+import Dropdown from "../components/Dropdown"
 
 function Home() {
     const [Tasks, setTasks] = useState([]);
@@ -11,6 +12,8 @@ function Home() {
     const [date, setDate] = useState(new Date());
     const [timestamp, setTimestamp] = useState(date.getTime());
     const [deleteMode, setDeleteMode] = useState(false)
+
+    const options = ['Essential', 'Vital', 'Fair', 'Trivial']
 
     const activateDeleteMode = (e) => {
         if (deleteMode === false) {
@@ -91,6 +94,7 @@ function Home() {
                     onChange={(e) => setTitle(e.target.value)}
                     value={title}
                 />
+                <Dropdown options={options}/>
                 <input type="submit" value="Submit"></input>
             </form>
             <button onClick={activateDeleteMode}>Delete Tasks</button>

@@ -1,12 +1,13 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import "../styles/Task.css"
 import api from "../api";
 
 
 function Task({ task, onDelete, show}) {
 
-    const [completed, setCompleted] = useState(false);
-    const complete = async () => {
+    const [completed, setCompleted] = useState(task.complete);
+
+    const completeTask = async () => {
         try {
             const resp = api.patch(`api/tasks/update/${task.id}/`, {complete : !completed})
             console.log(!completed)
@@ -29,7 +30,8 @@ function Task({ task, onDelete, show}) {
                 type="checkbox" 
                 className="checkbox" 
                 id="exampleCheckbox" 
-                onChange={complete}
+                onChange={completeTask}
+                checked={completed}
                 />
             </div>
             {show && <button className="delete-button" onClick={() => onDelete(task.id)}>

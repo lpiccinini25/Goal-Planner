@@ -5,6 +5,7 @@ import "../styles/Home.css"
 import Calendar from 'react-calendar'
 import '../styles/Calendar.css';
 import Dropdown from "../components/Dropdown"
+import MonthlyStats from "../components/MonthlyStats"
 
 function Home() {
     const [Tasks, setTasks] = useState([]);
@@ -107,7 +108,10 @@ function Home() {
                         <input type="submit" value="Submit"></input>
                     </form>
                 </div>
-                <button onClick={activateDeleteMode}>Delete Tasks</button>
+                <div>
+                    <button onClick={activateDeleteMode}>Delete Tasks</button>
+                    <MonthlyStats timestamp={timestamp} />
+                </div>
             </div>
             <div className="task-section">
                 <h2>{timestamp}</h2>

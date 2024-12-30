@@ -1,8 +1,8 @@
 .task-container {
-    padding: 10px;
+    padding: 5px;
     margin: 20px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    border: 3px solid #000000;
+    border-radius: 10px;
   }
   
   .task-date {

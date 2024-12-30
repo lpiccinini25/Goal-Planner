@@ -3,7 +3,7 @@ import api from "../api";
 import Task from "../components/Task"
 import "../styles/Home.css"
 import Calendar from 'react-calendar'
-import 'react-calendar/dist/Calendar.css';
+import '../styles/Calendar.css';
 import Dropdown from "../components/Dropdown"
 
 function Home() {
@@ -84,10 +84,30 @@ function Home() {
     };
 
     return (
-        <div>
-            <div>
-                <Calendar onChange={onChange} value={date} />
-                {console.log(timestamp)}
+        <div className="entire-page">
+            <div className="top-container">
+                <div>
+                    <Calendar className="calendar" onChange={onChange} value={date} />
+                    {console.log(timestamp)}
+                </div>
+                <div>
+                    <h2>Create a Task</h2>
+                    <form onSubmit={createTask}>
+                        <label htmlFor="title">Task:</label>
+                        <br />
+                        <input
+                            type="text"
+                            id="title"
+                            name="title"
+                            required
+                            onChange={(e) => setTitle(e.target.value)}
+                            value={title}
+                        />
+                        <Dropdown options={options} callback={setTaskImportance}/>
+                        <input type="submit" value="Submit"></input>
+                    </form>
+                </div>
+                <button onClick={activateDeleteMode}>Delete Tasks</button>
             </div>
             <div>
                 <h2>{timestamp}</h2>
@@ -95,22 +115,6 @@ function Home() {
                     <Task task={task} onDelete={deleteTask} key={task.id} show={deleteMode}/>
                 ))}
             </div>
-            <h2>Create a Task</h2>
-            <form onSubmit={createTask}>
-                <label htmlFor="title">Task:</label>
-                <br />
-                <input
-                    type="text"
-                    id="title"
-                    name="title"
-                    required
-                    onChange={(e) => setTitle(e.target.value)}
-                    value={title}
-                />
-                <Dropdown options={options} callback={setTaskImportance}/>
-                <input type="submit" value="Submit"></input>
-            </form>
-            <button onClick={activateDeleteMode}>Delete Tasks</button>
         </div>
     );
 }

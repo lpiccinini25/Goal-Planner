@@ -4,7 +4,6 @@ import api from "../api";
 
 
 function Task({ task, onDelete, show}) {
-    const formattedDate = new Date(task.created_at).toLocaleDateString("en-US")
 
     const [completed, setCompleted] = useState(false);
     const complete = async () => {
@@ -17,8 +16,14 @@ function Task({ task, onDelete, show}) {
         }
     };
     return (
-        <div className="task-container">
-            <div className="checkbox-container">
+        <div className={`
+        task-container
+        ${task.importance === 4 ? 'Essential' : ''}
+        ${task.importance ===  3 ? 'Vital' : ''}
+        ${task.importance === 2 ? 'Fair' : ''}
+        ${task.importance === 1 ? 'Trivial' : 'Unchosen'}
+        `}>
+            <div className={`checkbox-container`}>
                 <span className="task-title">{task.title}</span>
                 <input 
                 type="checkbox" 
@@ -27,7 +32,6 @@ function Task({ task, onDelete, show}) {
                 onChange={complete}
                 />
             </div>
-            <p className="task-date">{formattedDate}</p>
             {show && <button className="delete-button" onClick={() => onDelete(task.id)}>
                 Delete
             </button>}

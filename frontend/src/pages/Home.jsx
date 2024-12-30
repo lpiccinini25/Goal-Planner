@@ -109,7 +109,7 @@ function Home() {
                 </div>
                 <button onClick={activateDeleteMode}>Delete Tasks</button>
             </div>
-            <div>
+            <div className="task-section">
                 <h2>{timestamp}</h2>
                 {Tasks.map((task) => (
                     <Task task={task} onDelete={deleteTask} key={task.id} show={deleteMode}/>

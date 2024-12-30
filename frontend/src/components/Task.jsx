@@ -3,15 +3,16 @@ import "../styles/Task.css"
 import api from "../api";
 
 
-function Task({ task, onDelete, show}) {
+function Task({ task, onDelete, show, callback}) {
 
     const [completed, setCompleted] = useState(task.complete);
 
     const completeTask = async () => {
         try {
-            const resp = api.patch(`api/tasks/update/${task.id}/`, {complete : !completed})
+            const resp = await api.patch(`api/tasks/update/${task.id}/`, {complete : !completed})
             console.log(!completed)
             setCompleted(!completed)
+            callback()
         } catch (error) {
             console.log(error)
         }

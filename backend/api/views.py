@@ -7,6 +7,47 @@ from .models import Task
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
+class RetrieveLastWeeksTasks(generics.ListAPIView):
+    serializer_class = TaskSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        queryset = Task.objects.filter(author=user)
+
+        timestamp = self.request.query_params.get('timestamp', None)
+        if timestamp:
+            try:
+                current_date = datetime.fromtimestamp(int(timestamp)/1000)
+                one_week_earlier = current_date - relativedelta(weeks=1)
+                two_weeks_earlier = current_date - relativedelta(weeks=2)
+                queryset = queryset.filter(task_date__range=(two_weeks_earlier, one_week_earlier))
+            except ValueError:
+                # Handle invalid date format gracefully
+                pass
+
+        return queryset
+
+class RetrieveWeeklyTasks(generics.ListAPIView):
+    serializer_class = TaskSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        queryset = Task.objects.filter(author=user)
+
+        timestamp = self.request.query_params.get('timestamp', None)
+        if timestamp:
+            try:
+                current_date = datetime.fromtimestamp(int(timestamp)/1000)
+                one_week_earlier = current_date - relativedelta(weeks=1)
+                queryset = queryset.filter(task_date__range=(one_week_earlier, current_date))
+            except ValueError:
+                # Handle invalid date format gracefully
+                pass
+
+        return queryset
+
 class RetrieveMonthlyTasks(generics.ListAPIView):
     serializer_class = TaskSerializer
     permission_classes = [IsAuthenticated]

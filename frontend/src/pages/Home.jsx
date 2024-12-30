@@ -5,7 +5,7 @@ import "../styles/Home.css"
 import Calendar from 'react-calendar'
 import '../styles/Calendar.css';
 import Dropdown from "../components/Dropdown"
-import MonthlyStats from "../components/MonthlyStats"
+import Stats from "../components/Stats"
 
 function Home() {
     const [Tasks, setTasks] = useState([]);
@@ -14,8 +14,14 @@ function Home() {
     const [timestamp, setTimestamp] = useState(date.getTime());
     const [deleteMode, setDeleteMode] = useState(false)
     const [importance, setImportance] = useState(0)
+    const [currentDate, setCurrentDate] = useState(new Date())
+    const [reloadTrigger, setReloadTrigger] = useState(0)
 
     const options = ['Essential (4 points)', 'Vital (3 points)', 'Fair (2 points)', 'Trivial (1 point)']
+
+    const causeReload = () => {
+        setReloadTrigger(prev => prev + 1)
+    }
 
     const setTaskImportance = (value) => {
         setImportance(value)
@@ -40,6 +46,7 @@ function Home() {
     useEffect(() => {
         const startOfToday = new Date();
         startOfToday.setHours(0, 0, 0, 0);
+        setCurrentDate(startOfToday)
         setTimestamp(startOfToday.getTime())
         getTasks(startOfToday.getTime());
     }, []);
@@ -110,13 +117,13 @@ function Home() {
                 </div>
                 <div>
                     <button onClick={activateDeleteMode}>Delete Tasks</button>
-                    <MonthlyStats timestamp={timestamp} />
+                    <Stats reloadTrigger={reloadTrigger} timestamp={currentDate.getTime()} />
                 </div>
             </div>
             <div className="task-section">
                 <h2>{timestamp}</h2>
                 {Tasks.map((task) => (
-                    <Task task={task} onDelete={deleteTask} key={task.id} show={deleteMode}/>
+                    <Task task={task} onDelete={deleteTask} key={task.id} show={deleteMode} callback={causeReload}/>
                 ))}
             </div>
         </div>

@@ -33,17 +33,19 @@ function Stats({timestamp, reloadTrigger}) {
 
     const CalculateDifference = () => {
         if (LastWeeksPoints === 0 & WeeklyPoints !== 0) {
-            setDifference("are infinitely better")
+            setDifference("an infinitely greater ")
+            setUpOrDown("of")
         } else if (LastWeeksPoints === WeeklyPoints) {
-            setDifference("did not change")
+            setDifference("the same")
+            setUpOrDown("of")
         } else {
             const Percentage = WeeklyPoints / LastWeeksPoints
             if (Percentage < 1) {
-                setDifference(100*(1-Percentage))
-                setUpOrDown("Decreased")
+                setDifference(Math.round(100*(1-Percentage)))
+                setUpOrDown("less")
             } else {
-                setDifference(100*(Percentage-1))
-                setUpOrDown("Increased")
+                setDifference(Math.round(100*(Percentage-1)))
+                setUpOrDown("more")
             }
 
         }
@@ -71,7 +73,7 @@ function Stats({timestamp, reloadTrigger}) {
         <div>
             <h1>Completed Monthly Tasks {MonthlyPoints}</h1>
             <h1>Completed Weekly Tasks {WeeklyPoints}</h1>
-            <h1>You {UpOrDown} {Difference} compared to last week</h1>
+            <h1>You earned {Difference}% {UpOrDown} points compared to last week</h1>
         </div>
     )
 }

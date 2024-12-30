@@ -1,11 +1,24 @@
 import React, {useState, useEffect} from "react";
+import "../styles/Home.css"
 import "../styles/Task.css"
+import "../styles/Form.css"
 import api from "../api";
 
 
-function Task({ task, onDelete, show, callback}) {
+function Task({ task, onDelete, callback}) {
 
     const [completed, setCompleted] = useState(task.complete);
+    const [show, setShow] = useState(false)
+
+
+    const handleOnMouseEnter = () => {
+        setShow(true)
+    }
+
+    const handleOnMouseLeave = () => {
+        setShow(false)
+    }
+
 
     const completeTask = async () => {
         try {
@@ -19,25 +32,24 @@ function Task({ task, onDelete, show, callback}) {
     };
     return (
         <div className={`
-        task-container
         ${task.importance === 4 ? 'Essential' : ''}
         ${task.importance ===  3 ? 'Vital' : ''}
         ${task.importance === 2 ? 'Fair' : ''}
         ${task.importance === 1 ? 'Trivial' : 'Unchosen'}
-        `}>
+        ${completed === true ? 'task-completed' : 'task-container'}
+        `} onMouseEnter={handleOnMouseEnter} onMouseLeave={handleOnMouseLeave}>
             <div className={`checkbox-container`}>
                 <span className="task-title">{task.title}</span>
-                <input 
-                type="checkbox" 
-                className="checkbox" 
-                id="exampleCheckbox" 
-                onChange={completeTask}
-                checked={completed}
-                />
-            </div>
-            {show && <button className="delete-button" onClick={() => onDelete(task.id)}>
+                {show && <button
+                type="submit" 
+                value="Submit" 
+                className="form-button"
+                onClick={completeTask}
+                >Complete</button>}
+                {show && <button className="delete-button" onClick={() => onDelete(task.id)}>
                 Delete
-            </button>}
+                </button>}
+            </div>
         </div>
     );
 }

@@ -123,7 +123,7 @@ function Home() {
             <div className="task-section">
                 <h2>{timestamp}</h2>
                 {Tasks.map((task) => (
-                    <Task task={task} onDelete={deleteTask} key={task.id} show={deleteMode} callback={causeReload}/>
+                    <Task task={task} onDelete={deleteTask} key={task.id} callback={causeReload}/>
                 ))}
             </div>
         </div>

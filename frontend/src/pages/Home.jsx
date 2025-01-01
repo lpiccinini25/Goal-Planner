@@ -11,14 +11,16 @@ import RecurringTasks from "../components/RecurringTasks";
 function Home() {
     const [Tasks, setTasks] = useState([]);
     const [title, setTitle] = useState("");
-    const [date, setDate] = useState(new Date());
-    const [timestamp, setTimestamp] = useState(date.getTime());
+    const [date, setDate] = useState("");
+    const [timestamp, setTimestamp] = useState(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()).getTime());
     const [deleteMode, setDeleteMode] = useState(false)
     const [importance, setImportance] = useState(0)
     const [currentDate, setCurrentDate] = useState(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()))
     const [reloadTrigger, setReloadTrigger] = useState(0)
     const [recurring, setRecurring] = useState(false)
     const [recurringTasks, setRecurringTasks] = useState([])
+    const [hasRecurring, setHasRecurring] = useState(false)
+    const [tasksLoaded, setTasksLoaded] = useState(false); 
     const [tasksProcessed, setTasksProcessed] = useState(false);
 
     const options = ['Essential (4 points)', 'Vital (3 points)', 'Fair (2 points)', 'Trivial (1 point)']
@@ -38,10 +40,12 @@ function Home() {
             setDeleteMode(false)
         }
         getTasks(timestamp)
+        createRecurringTasks()
     }
 
     const onChange = date => {
-        setDate(date);
+        const dateOnly = date.toISOString().split("T")[0];
+        setDate(dateOnly);
         const temp = date.getTime();
         setTimestamp(temp);
         getTasks(temp);
@@ -50,21 +54,23 @@ function Home() {
     useEffect(() => {
         const startOfToday = new Date();
         startOfToday.setHours(0, 0, 0, 0);
-        console.log("start of today is "+startOfToday)
+        const dateOnly = startOfToday.toISOString().split("T")[0];
+        setDate(dateOnly);
         setTimestamp(startOfToday.getTime())
         getTasks(startOfToday.getTime());
     }, []);
 
-    const getTasks = (timestamp) => {
-        api
-            .get(`/api/tasks/?timestamp=${timestamp}`)
-            .then((res) => res.data)
-            .then((data) => {
-                setTasks(data);
-                console.log(data);
-            })
-            .catch((err) => alert(err));
-    };
+    const getTasks = async (timestamp) => {
+        try {
+          const res = await api.get(`/api/tasks/?timestamp=${timestamp}`);
+          setTasks(res.data);
+        } catch (err) {
+          alert(err);
+        } finally {
+          // Mark that we've finished loading tasks (even if empty)
+          setTasksLoaded(true);
+        }
+      };
 
     const deleteTask = (id) => {
         api
@@ -73,6 +79,7 @@ function Home() {
                 if (res.status === 204) alert("Task deleted!");
                 else alert("Failed to delete task.");
                 getTasks(timestamp);
+                createRecurringTasks()
             })
             .catch((error) => alert(error));
     };
@@ -118,6 +125,8 @@ function Home() {
           setRecurringTasks(fetchedRecurringTasks);
     
           const currentTaskTitles = new Set(Tasks.map((t) => t.title));
+
+          console.log(currentTaskTitles.size)
           const tasksToCreate = fetchedRecurringTasks.filter(
             (t) => !currentTaskTitles.has(t.title)
           );
@@ -134,18 +143,27 @@ function Home() {
     
 
     useEffect(() => {
-        if (!tasksProcessed && timestamp === currentDate.getTime()) {
+        if (!tasksProcessed && tasksLoaded) {
           console.log("Creating recurring tasks for today...");
           setTasksProcessed(true); 
           createRecurringTasks();
         }
       }, [Tasks, timestamp, currentDate, tasksProcessed]);
+    
+    useEffect(() => {
+        if (recurringTasks.length === 0) {
+            setHasRecurring(false)
+          } else {
+            setHasRecurring(true)
+          }
+    }, [recurringTasks])
+
 
     return (
         <div className="entire-page">
             <div className="top-container">
                 <div>
-                    <Calendar className="calendar" onChange={onChange} value={date} />
+                    <Calendar className="calendar" onChange={onChange} value={new Date(timestamp)} />
                     {console.log(timestamp)}
                 </div>
                 <div>
@@ -175,16 +193,17 @@ function Home() {
                 </div>
             </div>
             <div className="task-section">
-                <h2>{timestamp}</h2>
+                <h1>{date}</h1>
                 {Tasks.map((task) => (
                     <Task task={task} onDelete={deleteTask} key={task.id} callback={causeReload}/>
                 ))}
             </div>
-            <div>
+            <div className="task-section">
                 <h1>Recurring Tasks</h1>
-                {recurringTasks.map((task) => (
+                {hasRecurring && recurringTasks.map((task) => (
                     <RecurringTasks task={task} onDelete={deleteTask} key={task.id} callback={causeReload}/>
                 ))}
+                {!hasRecurring && <h2>No Recurring Tasks</h2>}
             </div>
 
         </div>

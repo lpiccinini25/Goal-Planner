@@ -19,17 +19,6 @@ function RecurringTasks({ task, onDelete, callback}) {
         setShow(false)
     }
 
-
-    const completeTask = async () => {
-        try {
-            const resp = await api.patch(`api/tasks/update/${task.id}/`, {complete : !completed})
-            console.log(!completed)
-            setCompleted(!completed)
-            callback()
-        } catch (error) {
-            console.log(error)
-        }
-    };
     return (
         <div className={`
         ${task.importance === 4 ? 'Essential' : ''}
@@ -40,12 +29,6 @@ function RecurringTasks({ task, onDelete, callback}) {
         `} onMouseEnter={handleOnMouseEnter} onMouseLeave={handleOnMouseLeave}>
             <div className={`checkbox-container`}>
                 <span className="task-title">{task.title}</span>
-                {show && <button
-                type="submit" 
-                value="Submit" 
-                className="form-button"
-                onClick={completeTask}
-                >Complete</button>}
                 {show && <button className="delete-button" onClick={() => onDelete(task.id)}>
                 Delete
                 </button>}

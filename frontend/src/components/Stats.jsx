@@ -1,5 +1,6 @@
 import api from "../api";
 import React, {useState, useEffect} from "react";
+import "../styles/Stats.css"
 
 function Stats({timestamp, reloadTrigger}) {
     const [MonthlyPoints, setMonthlyPoints] = useState(0)
@@ -71,9 +72,9 @@ function Stats({timestamp, reloadTrigger}) {
 
     return (
         <div>
-            <h1>Completed Monthly Tasks {MonthlyPoints}</h1>
-            <h1>Completed Weekly Tasks {WeeklyPoints}</h1>
-            <h1>You earned {Difference}% {UpOrDown} points compared to last week</h1>
+            <h1 className="stats">Completed Monthly Tasks {MonthlyPoints}</h1>
+            <h1 className="stats">Completed Weekly Tasks {WeeklyPoints}</h1>
+            <h1 className="stats">You earned {Difference}% {UpOrDown} points compared to last week</h1>
         </div>
     )
 }

@@ -181,29 +181,28 @@ function Home() {
                         />
                         <div className="inline">
                             <span className="recurring">Make Recurring</span>
-                            <input type="checkbox" onClick={handleRecurring}></input>
+                            <input type="checkbox" className="checkbox" onClick={handleRecurring}></input>
                         </div>
                         <Dropdown options={options} callback={setTaskImportance}/>
                         <input type="submit" value="Submit"></input>
                     </form>
                 </div>
                 <div>
-                    <button onChange={activateDeleteMode}>Delete Tasks</button>
                     <Stats reloadTrigger={reloadTrigger} timestamp={currentDate.getTime()} />
                 </div>
             </div>
             <div className="task-section">
-                <h1>{date}</h1>
+                <h1>Tasks For {date}</h1>
                 {Tasks.map((task) => (
                     <Task task={task} onDelete={deleteTask} key={task.id} callback={causeReload}/>
                 ))}
             </div>
-            <div className="task-section">
+            <div className="recurring-tasks">
                 <h1>Recurring Tasks</h1>
                 {hasRecurring && recurringTasks.map((task) => (
                     <RecurringTasks task={task} onDelete={deleteTask} key={task.id} callback={causeReload}/>
                 ))}
-                {!hasRecurring && <h2>No Recurring Tasks</h2>}
+                {!hasRecurring && <h2>    No Recurring Tasks</h2>}
             </div>
 
         </div>

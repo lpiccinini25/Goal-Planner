@@ -5,7 +5,12 @@ div {
   
   .task-section {
     justify-content: center;
-    padding: 1rem 10rem
+    padding: 2rem 10rem
+  }
+
+  .recurring-tasks {
+    justify-content: center;
+    padding: 2rem 10rem 10rem 10rem
   }
   /* Styles for the notes section */
   .notes-section {
@@ -92,9 +97,15 @@ div {
 
   .recurring {
     font-size: 20px;
+    width: 150px;
   }
 
   .inline {
     display: flex;
     align-items: center;
+    justify-content: center;
+  }
+
+  .checkbox {
+    width: 60px;
   }

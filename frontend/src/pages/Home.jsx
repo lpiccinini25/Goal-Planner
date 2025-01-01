@@ -15,7 +15,7 @@ function Home() {
     const [timestamp, setTimestamp] = useState(date.getTime());
     const [deleteMode, setDeleteMode] = useState(false)
     const [importance, setImportance] = useState(0)
-    const [currentDate, setCurrentDate] = useState(new Date())
+    const [currentDate, setCurrentDate] = useState(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()))
     const [reloadTrigger, setReloadTrigger] = useState(0)
     const [recurring, setRecurring] = useState(false)
     const [recurringTasks, setRecurringTasks] = useState([])
@@ -50,7 +50,7 @@ function Home() {
     useEffect(() => {
         const startOfToday = new Date();
         startOfToday.setHours(0, 0, 0, 0);
-        setCurrentDate(startOfToday)
+        console.log("start of today is "+startOfToday)
         setTimestamp(startOfToday.getTime())
         getTasks(startOfToday.getTime());
     }, []);
@@ -95,58 +95,51 @@ function Home() {
             .catch((err) => alert(err));
     };
 
-    const createTaskRecurring = (title, importance) => {
-
-        api
-            .post(`/api/tasks/?timestamp=${currentDate.getTime()}`, { title , importance})
-            .then(() => setTasksProcessed(true))
-            .catch((err) => alert(err));
-
-    };
-
+    const createTaskRecurring = async (title, importance) => {
+        try {
+          await api.post(`/api/tasks/?timestamp=${currentDate.getTime()}`, {
+            title,
+            importance,
+          });
+        } catch (err) {
+          alert(err);
+        }
+      };
     const handleRecurring = () => {
         setRecurring(!recurring)
     }
 
     const createRecurringTasks = async () => {
-        if (!tasksProcessed) {
         try {
-            const resp = await api.get("/api/tasks/recurring/");
-            const recurringTasks = resp.data;
-            setRecurringTasks(recurringTasks)
+          const resp = await api.get("/api/tasks/recurring/");
+          const fetchedRecurringTasks = resp.data;
+          console.log("Recurring tasks fetched:", fetchedRecurringTasks);
     
-            // Get current task titles for comparison'
-            console.log(Tasks.length)
-            const currentTaskTitles = new Set(Tasks.map(task => task.title));
-
-            console.log(currentTaskTitles.size)
-
-            for (const item of currentTaskTitles) {
-                console.log("title #" + item)
-            }
+          setRecurringTasks(fetchedRecurringTasks);
     
-            for (const recurringTask of recurringTasks) {
-                if (!currentTaskTitles.has(recurringTask.title)) {
-                    await createTaskRecurring(recurringTask.title, recurringTask.importance);
-                }
-            }
+          const currentTaskTitles = new Set(Tasks.map((t) => t.title));
+          const tasksToCreate = fetchedRecurringTasks.filter(
+            (t) => !currentTaskTitles.has(t.title)
+          );
+    
+          for (const task of tasksToCreate) {
+            await createTaskRecurring(task.title, task.importance);
+          }
+    
+          getTasks(timestamp);
         } catch (err) {
-            console.error("Error fetching recurring tasks:", err);
-        }}
-    };
+          console.error("Error fetching recurring tasks:", err);
+        }
+      };
+    
 
     useEffect(() => {
-        // If we haven't processed tasks yet AND the date matches
-        if (!tasksProcessed && timestamp === currentDate.getTime() && Tasks.length > 0) {
-          setTasksProcessed(true)
+        if (!tasksProcessed && timestamp === currentDate.getTime()) {
+          console.log("Creating recurring tasks for today...");
+          setTasksProcessed(true); 
           createRecurringTasks();
         }
-      }, [Tasks, currentDate, timestamp]);
-
-    useEffect(() => {
-        // If we haven't processed tasks yet AND the date matches
-        getTasks(currentDate.getTime())
-    }, [recurringTasks]);
+      }, [Tasks, timestamp, currentDate, tasksProcessed]);
 
     return (
         <div className="entire-page">

@@ -89,3 +89,12 @@ div {
     grid-column-start: 1;
     grid-column-end: 3;
   }
+
+  .recurring {
+    font-size: 20px;
+  }
+
+  .inline {
+    display: flex;
+    align-items: center;
+  }

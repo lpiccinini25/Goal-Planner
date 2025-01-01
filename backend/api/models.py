@@ -8,6 +8,7 @@ class Task(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="notes")
     importance = models.IntegerField(default=0)
     complete = models.BooleanField(default=False)
+    recurring = models.BooleanField(default=False)
 
     def __str__(self):
         return self.title 

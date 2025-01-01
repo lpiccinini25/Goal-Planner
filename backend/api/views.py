@@ -7,6 +7,17 @@ from .models import Task
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
+class RetrieveRecurringTasks(generics.ListAPIView):
+    serializer_class = TaskSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user 
+        queryset = Task.objects.filter(author=user)
+        queryset = queryset.filter(recurring=True)
+
+        return queryset
+
 class RetrieveLastWeeksTasks(generics.ListAPIView):
     serializer_class = TaskSerializer
     permission_classes = [IsAuthenticated]

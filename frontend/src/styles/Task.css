@@ -3,6 +3,7 @@
     margin: 20px 0;
     border: 3px solid #000000;
     border-radius: 10px;
+    justify-content: space-between;
   }
   
   .task-date {
@@ -15,6 +16,7 @@
     margin: 20px 0;
     border: 5px solid #ffee00;
     border-radius: 10px;
+    justify-content: space-between;
   }
   
   .delete-button {

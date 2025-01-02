@@ -20,7 +20,7 @@ class RetrieveNextMonthsTasks(generics.ListAPIView):
             try:
                 current_date = datetime.fromtimestamp(int(timestamp)/1000)
                 one_month_later = current_date + relativedelta(months=1)
-                queryset = queryset.filter(task_date__range=(current_date, one_month_later))
+                queryset = queryset.filter(task_date__range=(current_date + relativedelta(days=1), one_month_later))
             except ValueError:
                 # Handle invalid date format gracefully
                 pass

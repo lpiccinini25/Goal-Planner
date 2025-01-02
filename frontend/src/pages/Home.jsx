@@ -34,15 +34,6 @@ function Home() {
         setImportance(value)
     }
 
-    const activateDeleteMode = (e) => {
-        if (deleteMode === false) {
-            setDeleteMode(true)
-        } else {
-            setDeleteMode(false)
-        }
-        getTasks(timestamp)
-        createRecurringTasks()
-    }
 
     const onChange = date => {
         const dateOnly = date.toISOString().split("T")[0];
@@ -80,7 +71,7 @@ function Home() {
                 if (res.status === 204) alert("Task deleted!");
                 else alert("Failed to delete task.");
                 getTasks(timestamp);
-                createRecurringTasks()
+                getRecurringTasks()
             })
             .catch((error) => alert(error));
     };
@@ -115,6 +106,14 @@ function Home() {
       };
     const handleRecurring = () => {
         setRecurring(!recurring)
+    }
+
+    const getRecurringTasks = async () => {
+          const resp = await api.get("/api/tasks/recurring/");
+          const fetchedRecurringTasks = resp.data;
+          console.log("Recurring tasks fetched:", fetchedRecurringTasks);
+    
+          setRecurringTasks(fetchedRecurringTasks)
     }
 
     const createRecurringTasks = async () => {

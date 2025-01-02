@@ -9,5 +9,6 @@ urlpatterns = [
     path("tasks/thisweek/", views.RetrieveWeeklyTasks.as_view(), name="weekly-tasks"),
     path("tasks/lastweek/", views.RetrieveLastWeeksTasks.as_view(), name="last-weeks-tasks"),
     path("task/<int:pk>/", views.TaskFromID.as_view(), name="task"),
-    path("tasks/recurring/", views.RetrieveRecurringTasks.as_view(), name="recurring-tasks")
+    path("tasks/recurring/", views.RetrieveRecurringTasks.as_view(), name="recurring-tasks"),
+    path("tasks/nextmonth/", views.RetrieveNextMonthsTasks.as_view(), name="next-month-tasks")
 ]

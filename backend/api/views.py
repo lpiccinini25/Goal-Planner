@@ -7,6 +7,26 @@ from .models import Task
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
+class RetrieveNextMonthsTasks(generics.ListAPIView):
+    serializer_class = TaskSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        queryset = Task.objects.filter(author=user)
+
+        timestamp = self.request.query_params.get('timestamp', None)
+        if timestamp:
+            try:
+                current_date = datetime.fromtimestamp(int(timestamp)/1000)
+                one_month_later = current_date + relativedelta(months=1)
+                queryset = queryset.filter(task_date__range=(current_date, one_month_later))
+            except ValueError:
+                # Handle invalid date format gracefully
+                pass
+
+        return queryset
+
 class RetrieveRecurringTasks(generics.ListAPIView):
     serializer_class = TaskSerializer
     permission_classes = [IsAuthenticated]

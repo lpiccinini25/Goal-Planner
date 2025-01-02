@@ -7,6 +7,7 @@ import '../styles/Calendar.css';
 import Dropdown from "../components/Dropdown"
 import Stats from "../components/Stats"
 import RecurringTasks from "../components/RecurringTasks";
+import Upcoming from "../components/Upcoming"
 
 function Home() {
     const [Tasks, setTasks] = useState([]);
@@ -165,6 +166,9 @@ function Home() {
                 <div>
                     <Calendar className="calendar" onChange={onChange} value={new Date(timestamp)} />
                     {console.log(timestamp)}
+                </div>
+                <div>
+                  <Upcoming timestamp={currentDate.getTime()} />
                 </div>
                 <div>
                     <h2>Create a Task</h2>

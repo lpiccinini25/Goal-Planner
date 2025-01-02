@@ -5,6 +5,7 @@ import "../styles/Form.css"
 import api from "../api";
 function Upcoming({timestamp}) {
     const [Tasks, setTasks] = useState([])
+    const [tasksDone, setTasksDone] = useState(false)
 
     const getTasks = async () => {
         const resp = await api.get(`api/tasks/nextmonth/?timestamp=${timestamp}`)

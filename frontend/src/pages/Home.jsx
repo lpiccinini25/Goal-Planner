@@ -164,14 +164,14 @@ function Home() {
     return (
         <div className="entire-page">
             <div className="top-container">
-                <div>
+                <div className='calendar-div'>
                     <Calendar className="calendar" onChange={onChange} value={new Date(timestamp)} />
                     {console.log(timestamp)}
                 </div>
                 <div className="upcoming">
                   <Upcoming reloadTrigger={reloadTrigger} timestamp={currentDate.getTime()} />
                 </div>
-                <div>
+                <div className='create'>
                     <h2>Create a Task</h2>
                     <form onSubmit={createTask}>
                         <label htmlFor="title">Task:</label>

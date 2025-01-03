@@ -3,10 +3,30 @@ div {
     font-family: Arial, sans-serif;
   }
   .upcoming {
-    height: 400px;
-    max-height: 500px;
-    overflow: auto;
-  }
+    height: 100%;
+    width: 100%;
+    display: flex;
+    overflow: auto; /* Add scrollbars if content exceeds size */
+    flex-direction: column; /* Stack items vertically */
+    align-items: center; /* Center items horizontally */
+    border-radius: 5px;
+    background-color: white;
+    grid-row-start: 1;
+    grid-row-end: 5;
+    grid-column-start: 2;
+    grid-column-end: 2;
+    padding: 10px; /* Optional for better spacing */
+    box-sizing: border-box; /* Ensure padding is included in width/height */
+}
+
+.upcoming > * {
+    white-space: normal;        /* Allow text to wrap */
+    overflow: visible;          /* Ensure text is fully visible */
+    width: 100%;                /* Allow text to take full width of the container */
+    text-align: center;         /* Center-align text */
+    font-size: clamp(12px, 2vw, 16px); /* Dynamically resize text */
+    word-wrap: break-word;      /* Break long words to prevent overflow */
+}
   .task-section {
     justify-content: center;
     padding: 2rem 10rem
@@ -87,16 +107,23 @@ div {
   .top-container {
     display: grid;
     grid-template-rows: repeat(4, 60px);
-    grid-template-columns: repeat(auto-fit, minmax(100px, 2fr));
+    grid-template-columns: repeat(auto-fit, minmax(250px, 2fr));
     gap: 3rem;
     padding: 3rem;
   }
 
-  .calendar {
+  .create {
     grid-row-start: 1;
-    grid-row-end: 3;
-    grid-column-start: 1;
+    grid-row-end: 5;
+    grid-column-start: 3;
     grid-column-end: 3;
+  }
+
+  .calendar-div {
+    grid-row-start: 1;
+    grid-row-end: 5;
+    grid-column-start: 1;
+    grid-column-end: 1;
   }
 
   .recurring {

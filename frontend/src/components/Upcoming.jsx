@@ -30,10 +30,11 @@ function Upcoming({timestamp, reloadTrigger}) {
 
     return (
 
-        <div className="upcoming">
-            <h1>Upcoming Tasks</h1>
+        <div>
+            <h1>*Upcoming Tasks*</h1>
+            <p></p>
             {Tasks.map((task) => (
-                <h2>{task.title} - {task.task_date}</h2>
+                <h2> {task.title} - {task.task_date}</h2>
                 ))}
         </div>
     )

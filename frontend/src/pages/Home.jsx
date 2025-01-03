@@ -55,7 +55,13 @@ function Home() {
     const getTasks = async (timestamp) => {
         try {
           const res = await api.get(`/api/tasks/?timestamp=${timestamp}`);
-          setTasks(res.data);
+          let taskss = res.data
+          taskss.sort((a, b) => {
+            if (a.importance < b.importance) return 1
+            if (a.importance > b.importance) return -1
+            return 0;
+          })
+          setTasks(taskss);
         } catch (err) {
           alert(err);
         } finally {
@@ -112,19 +118,30 @@ function Home() {
 
     const getRecurringTasks = async () => {
           const resp = await api.get("/api/tasks/recurring/");
-          const fetchedRecurringTasks = resp.data;
+          let taskss = resp.data
+          taskss.sort((a, b) => {
+            if (a.importance < b.importance) return 1
+            if (a.importance > b.importance) return -1
+            return 0;
+          })
           console.log("Recurring tasks fetched:", fetchedRecurringTasks);
     
-          setRecurringTasks(fetchedRecurringTasks)
+          setRecurringTasks(taskss)
     }
 
     const createRecurringTasks = async () => {
         try {
           const resp = await api.get("/api/tasks/recurring/");
+          let taskss = resp.data
+          taskss.sort((a, b) => {
+            if (a.importance < b.importance) return 1
+            if (a.importance > b.importance) return -1
+            return 0;
+          })
           const fetchedRecurringTasks = resp.data;
           console.log("Recurring tasks fetched:", fetchedRecurringTasks);
     
-          setRecurringTasks(fetchedRecurringTasks);
+          setRecurringTasks(taskss);
     
           const currentTaskTitles = new Set(Tasks.map((t) => t.title));
 

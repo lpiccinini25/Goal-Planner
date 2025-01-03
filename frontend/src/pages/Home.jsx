@@ -72,6 +72,7 @@ function Home() {
                 else alert("Failed to delete task.");
                 getTasks(timestamp);
                 getRecurringTasks()
+                causeReload()
             })
             .catch((error) => alert(error));
     };
@@ -90,6 +91,7 @@ function Home() {
                 if (res.status === 201) alert("Task created!");
                 else alert("Failed to make task.");
                 getTasks(timestamp);
+                causeReload()
             })
             .catch((err) => alert(err));
     };
@@ -166,8 +168,8 @@ function Home() {
                     <Calendar className="calendar" onChange={onChange} value={new Date(timestamp)} />
                     {console.log(timestamp)}
                 </div>
-                <div>
-                  <Upcoming timestamp={currentDate.getTime()} />
+                <div className="upcoming">
+                  <Upcoming reloadTrigger={reloadTrigger} timestamp={currentDate.getTime()} />
                 </div>
                 <div>
                     <h2>Create a Task</h2>

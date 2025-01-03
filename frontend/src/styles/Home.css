@@ -2,7 +2,11 @@
 div {
     font-family: Arial, sans-serif;
   }
-  
+  .upcoming {
+    height: 400px;
+    max-height: 500px;
+    overflow: auto;
+  }
   .task-section {
     justify-content: center;
     padding: 2rem 10rem

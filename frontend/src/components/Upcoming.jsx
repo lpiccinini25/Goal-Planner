@@ -3,7 +3,7 @@ import "../styles/Home.css"
 import "../styles/Task.css"
 import "../styles/Form.css"
 import api from "../api";
-function Upcoming({timestamp}) {
+function Upcoming({timestamp, reloadTrigger}) {
     const [Tasks, setTasks] = useState([])
     const [tasksDone, setTasksDone] = useState(false)
 
@@ -26,14 +26,14 @@ function Upcoming({timestamp}) {
 
     useEffect(() => {
         getTasks()
-    }, [])
+    }, [reloadTrigger])
 
     return (
 
-        <div>
-            <h2>Upcoming Tasks</h2>
+        <div className="upcoming">
+            <h1>Upcoming Tasks</h1>
             {Tasks.map((task) => (
-                <h1>{task.title} - {task.task_date}</h1>
+                <h2>{task.title} - {task.task_date}</h2>
                 ))}
         </div>
     )

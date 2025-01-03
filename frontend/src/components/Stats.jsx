@@ -72,8 +72,8 @@ function Stats({timestamp, reloadTrigger}) {
 
     return (
         <div>
-            <h1 className="stats">Completed Monthly Tasks {MonthlyPoints}</h1>
-            <h1 className="stats">Completed Weekly Tasks {WeeklyPoints}</h1>
+            <h1 className="stats">Earned Points This Month: {MonthlyPoints}</h1>
+            <h1 className="stats">Earned Points This Week: {WeeklyPoints}</h1>
             <h1 className="stats">You earned {Difference}% {UpOrDown} points compared to last week</h1>
         </div>
     )

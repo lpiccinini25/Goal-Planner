@@ -8,5 +8,6 @@ weeks to track improvement in productivity.
 • Implemented token-based authentication in JavaScript to support user-created accounts.
 • Developed a points-based incentive system to encourage users to complete tasks.
 
-# Photos-- 
+# Photos and Demo Video-- 
+[![Watch the video](https://youtu.be/CIMMHX4Qcp0?si=zouXaaZdPxX2Po-5)](https://youtu.be/CIMMHX4Qcp0?si=zouXaaZdPxX2Po-5)
 ![goalplanner](https://github.com/user-attachments/assets/27c9e278-6ed2-4575-891d-27fe0649eda0)
